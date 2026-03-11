@@ -154,14 +154,16 @@ pipeline {
                 )]) {
 
                     sh '''
-                    #!/bin/bash
                     git config user.name "jenkins"
                     git config user.email "jenkins@ci.local"
 
-                    if [[ `git status --porcelain` ]]; then
+                    if [ -n "$(git status --porcelain)" ]; then
                         git add README.md CHANGELOG.md
+                        git commit -m "auto: update docs and changelog [skip ci]"
                         git remote set-url origin https://${GIT_USER}:${GIT_TOKEN}@${GIT_URL#https://}
                         git push origin HEAD:main
+                    else
+                        echo "No changes to commit"
                     fi
                     '''
                 }
