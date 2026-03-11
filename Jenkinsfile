@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AUTHOR = "Jeremy Cook"
-        REPO = "terraform-aws-example"
+        REPO = "terraform-aws-s3-static-website-3dglobe"
         PIPELINE_VERSION = "0.0.5"
     }
 
