@@ -154,6 +154,7 @@ pipeline {
                 )]) {
 
                     sh '''
+                    #!/bin/bash
                     git config user.name "jenkins"
                     git config user.email "jenkins@ci.local"
 
