@@ -49,8 +49,11 @@
 	<body>
 
 		<div id="container"></div>
+		<!-- globe_title is injected by Terraform templatefile().
+		     The nullable variable var.globe_title is resolved to a fallback
+		     string in locals before being passed here. -->
 		<div id="title">
-			World Elevation
+			${globe_title}
 		</div>
 		<div id="info">
 			Powered by <a href="http://www.chromeexperiments.com/globe/">WebGL Globe</a><br />

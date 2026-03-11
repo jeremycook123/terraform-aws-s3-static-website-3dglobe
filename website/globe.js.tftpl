@@ -1,3 +1,9 @@
+// Auto-rotation settings injected by Terraform templatefile().
+// var.auto_rotate (bool) and var.rotation_speed (number) are passed in
+// from the module caller and baked into this file at deploy time.
+var AUTO_ROTATE    = ${auto_rotate};
+var ROTATION_SPEED = ${rotation_speed};
+
 var Shaders = {
 
 	'earth' : {
@@ -309,6 +315,13 @@ function animate() {
 
 function render() {
 
+	// Auto-rotation: when AUTO_ROTATE is true (set by Terraform var.auto_rotate),
+	// increment target.x each frame by ROTATION_SPEED (set by var.rotation_speed).
+	// The globe still responds to mouse drag on top of the auto-rotation offset.
+	if ( AUTO_ROTATE ) {
+		target.x -= ROTATION_SPEED;
+	}
+
 	rotation.x += ( target.x - rotation.x ) * 0.05;
 	rotation.y += ( target.y - rotation.y ) * 0.05;
 	distance += ( distanceTarget - distance ) * 0.05;
@@ -316,18 +329,6 @@ function render() {
 	camera.position.x = distance * Math.sin( rotation.x ) * Math.cos( rotation.y );
 	camera.position.y = distance * Math.sin( rotation.y );
 	camera.position.z = distance * Math.cos( rotation.x ) * Math.cos( rotation.y );
-
-	/*
-	// Do not render if camera hasn't moved.
-
-	if ( vector.distanceTo( camera.position ) == 0 ) {
-
-		return;
-
-	}
-
-	vector.copy( camera.position );
-	*/
 
 	renderer.clear();
 	renderer.render( scene, camera );

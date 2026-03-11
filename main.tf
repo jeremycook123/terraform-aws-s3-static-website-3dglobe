@@ -3,13 +3,32 @@ resource "random_pet" "suffix" {
 }
 
 locals {
+  # ── Bucket naming ─────────────────────────────────────────────────────────
+  # Bool flag (create_random_suffix) drives a conditional string expression.
   random_suffix = var.create_random_suffix ? "${var.bucket_name}-${random_pet.suffix.id}" : var.bucket_name
   name_with_env = "${local.random_suffix}-${var.environment}"
+
+  # ── Nullable variable fallback ────────────────────────────────────────────
+  # globe_title defaults to null; resolve it to a display string here once
+  # so every reference below can use local.resolved_title without repeating
+  # the null check.
+  resolved_title = var.globe_title != null ? var.globe_title : "World Elevation"
+
+  # ── Derived tags ──────────────────────────────────────────────────────────
+  # Merge caller-supplied tags (map variable) with module-managed base tags.
+  common_tags = merge(
+    {
+      Environment = var.environment
+      ManagedBy   = "terraform"
+      AutoRotate  = tostring(var.auto_rotate)
+    },
+    var.tags,
+  )
 }
 
 resource "aws_s3_bucket" "website" {
   bucket        = local.name_with_env
-  tags          = var.tags
+  tags          = local.common_tags
   force_destroy = true
 }
 
@@ -41,14 +60,23 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
 resource "aws_s3_object" "index_html" {
   bucket       = aws_s3_bucket.website.id
   key          = "index.html"
-  source       = "${path.module}/website/index.html"
+  # templatefile() renders the .tftpl template, injecting the resolved title.
+  # The nullable globe_title variable is resolved to local.resolved_title first.
+  content      = templatefile("${path.module}/website/index.html.tftpl", {
+    globe_title = local.resolved_title
+  })
   content_type = "text/html"
 }
 
 resource "aws_s3_object" "globe_js" {
   bucket       = aws_s3_bucket.website.id
   key          = "globe.js"
-  source       = "${path.module}/website/globe.js"
+  # templatefile() injects the auto_rotate bool and rotation_speed number,
+  # so the JS behaviour is fully driven by Terraform input variables.
+  content      = templatefile("${path.module}/website/globe.js.tftpl", {
+    auto_rotate    = var.auto_rotate
+    rotation_speed = var.rotation_speed
+  })
   content_type = "text/javascript"
 }
 
