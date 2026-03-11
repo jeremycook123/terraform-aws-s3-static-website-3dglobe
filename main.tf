@@ -58,22 +58,22 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
 }
 
 resource "aws_s3_object" "index_html" {
-  bucket       = aws_s3_bucket.website.id
-  key          = "index.html"
+  bucket = aws_s3_bucket.website.id
+  key    = "index.html"
   # templatefile() renders the .tftpl template, injecting the resolved title.
   # The nullable globe_title variable is resolved to local.resolved_title first.
-  content      = templatefile("${path.module}/website/index.html.tftpl", {
+  content = templatefile("${path.module}/website/index.html.tftpl", {
     globe_title = local.resolved_title
   })
   content_type = "text/html"
 }
 
 resource "aws_s3_object" "globe_js" {
-  bucket       = aws_s3_bucket.website.id
-  key          = "globe.js"
+  bucket = aws_s3_bucket.website.id
+  key    = "globe.js"
   # templatefile() injects the auto_rotate bool and rotation_speed number,
   # so the JS behaviour is fully driven by Terraform input variables.
-  content      = templatefile("${path.module}/website/globe.js.tftpl", {
+  content = templatefile("${path.module}/website/globe.js.tftpl", {
     auto_rotate    = var.auto_rotate
     rotation_speed = var.rotation_speed
   })
