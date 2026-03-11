@@ -9,6 +9,18 @@ pipeline {
 
     stages {
 
+        stage('Skip Tag Builds') {
+            when {
+                buildingTag()
+            }
+            steps {
+                echo "Build triggered by tag. Skipping pipeline."
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
