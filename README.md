@@ -83,7 +83,7 @@ Apache 2 Licensed. See [LICENSE](https://github.com/jeremycook123/s3_static_site
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.35.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.36.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.8.1 |
 
 ## Modules
