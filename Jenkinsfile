@@ -17,16 +17,15 @@ pipeline {
         stage('Skip Tag Builds') {
             steps {
                 script {
-                    // Are we currently on a tag?
-                    def ref = sh(
-                        script: "git describe --tags --exact-match 2>/dev/null || echo 'no-tag'",
+                    def tag = sh(
+                        script: "git tag --points-at HEAD",
                         returnStdout: true
                     ).trim()
 
-                    if (ref != "no-tag") {
-                        echo "Tag build detected (${ref}). Skipping pipeline."
-                        currentBuild.result = 'SUCCESS'
-                        error("Stopping pipeline for tag build.")
+                    if (tag) {
+                        echo "Tag build detected (${tag}). Skipping pipeline."
+                        currentBuild.result = 'NOT_BUILT'
+                        return
                     }
                 }
             }
