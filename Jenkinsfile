@@ -158,7 +158,7 @@ pipeline {
 
                     if [[ `git status --porcelain` ]]; then
                         git add README.md CHANGELOG.md
-                        git commit -m "auto: update docs and changelog"
+                        git commit -m "auto: update docs and changelog [skip ci]"
                         git push https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_URL#https://} HEAD:main
                     fi
                     '''
