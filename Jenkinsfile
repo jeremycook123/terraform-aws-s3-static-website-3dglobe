@@ -178,7 +178,7 @@ pipeline {
 
                     sh '''
                     git tag ${NEW_VERSION}
-                    git push https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_URL#https://} ${NEW_VERSION}
+                    git push https://${GIT_USER}:${GIT_TOKEN}@${GIT_URL#https://} ${NEW_VERSION}
                     '''
                 }
             }
