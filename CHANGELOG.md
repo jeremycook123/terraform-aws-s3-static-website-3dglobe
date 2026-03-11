@@ -92,3 +92,13 @@
 ## v0.0.90
 ## v0.0.91
 ## v0.0.92
+## v0.0.93
+- Merge branch 'main' of https://github.com/jeremycook123/s3_static_site_module
+- updated module## v0.0.94
+## v0.0.95
+## v0.0.96
+## v0.0.97
+## v0.0.98
+## v0.0.99
+## v0.0.100
+## v0.0.101
