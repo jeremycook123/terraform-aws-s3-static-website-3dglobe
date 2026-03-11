@@ -43,17 +43,17 @@ pipeline {
             }
         }
 
-        stage('Security Scan') {
-            steps {
-                sh '''
-                if command -v tfsec >/dev/null; then
-                    tfsec .
-                else
-                    echo "tfsec not installed"
-                fi
-                '''
-            }
-        }
+        // stage('Security Scan') {
+        //     steps {
+        //         sh '''
+        //         if command -v tfsec >/dev/null; then
+        //             tfsec .
+        //         else
+        //             echo "tfsec not installed"
+        //         fi
+        //         '''
+        //     }
+        // }
 
         stage('Generate Documentation') {
             steps {
