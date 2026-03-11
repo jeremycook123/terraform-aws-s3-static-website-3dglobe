@@ -18,7 +18,7 @@ provider "aws" {
 }
 
 module "globe_static" {
-  source = "./modules/3dglobe"
+  source = "jeremycook123/s3-static-website-3dglobe/aws"
 
   # Required variables
   bucket_name = "my-3dglobe-static"

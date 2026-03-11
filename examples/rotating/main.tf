@@ -18,7 +18,7 @@ provider "aws" {
 }
 
 module "globe_rotating" {
-  source = "./modules/3dglobe"
+  source = "jeremycook123/s3-static-website-3dglobe/aws"
 
   # Required variables — must always be provided
   bucket_name = "my-3dglobe"
@@ -28,13 +28,13 @@ module "globe_rotating" {
   create_random_suffix = true
 
   # Bool flag — enables auto-rotation in the rendered globe.js
-  auto_rotate = true
+  # auto_rotate = true
 
   # Number — only meaningful when auto_rotate = true; controls spin speed
-  rotation_speed = 0.002
+  # rotation_speed = 0.002
 
   # Nullable string — overrides the default "World Elevation" page title
-  globe_title = "Earth in Motion"
+  # globe_title = "Earth in Motion"
 
   # Map — merged with module base tags on the S3 bucket
   tags = {
