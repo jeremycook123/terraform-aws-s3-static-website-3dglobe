@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        AUTHOR = "Jeremy Cook"
         REPO = "terraform-aws-example"
     }
 
