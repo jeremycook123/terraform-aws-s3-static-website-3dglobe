@@ -11,10 +11,11 @@ pipeline {
         stage('Skip Tag Builds') {
             steps {
                 script {
-                    if (env.BRANCH_NAME ==~ /^v?\d+\.\d+\.\d+$/) {
+                    echo "env.BRANCH_NAME: ${env.BRANCH_NAME}"
+                    if (env.BRANCH_NAME ==~ /^(refs\/tags\/)?(tags\/)?v?\d+\.\d+\.\d+$/) {
                         echo "Tag build detected (${env.BRANCH_NAME}). Skipping pipeline."
                         currentBuild.result = 'SUCCESS'
-                        return
+                        error("Stopping pipeline for tag build.")
                     }
                 }
             }
