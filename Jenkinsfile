@@ -65,18 +65,32 @@ pipeline {
             }
         }
 
-        // stage('Security Scan') {
-        //     when { expression { env.IS_TAG_BUILD != 'true' } }
-        //     steps {
-        //         sh '''
-        //         if command -v tfsec >/dev/null; then
-        //             tfsec .
-        //         else
-        //             echo "tfsec not installed"
-        //         fi
-        //         '''
-        //     }
-        // }
+        stage('Security Scan') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
+            steps {
+                script {
+                    int exitCode = sh(
+                        label: 'Run tfsec',
+                        script: '''
+                        set -o pipefail
+                        tfsec --no-color --format sarif --out tfsec.sarif . | tee tfsec.txt
+                        ''',
+                        returnStatus: true
+                    )
+
+                    if (exitCode != 0) {
+                        echo "tfsec reported issues (exit code ${exitCode}). Marking build as UNSTABLE."
+                        currentBuild.result = 'UNSTABLE'
+                    } else {
+                        echo 'tfsec passed with no issues.'
+                    }
+                }
+
+                archiveArtifacts artifacts: 'tfsec.sarif, tfsec.txt', fingerprint: true, allowEmptyArchive: true
+
+                recordIssues enabledForFailure: true, tools: [sarif(pattern: 'tfsec.sarif', name: 'tfsec')]
+            }
+        }
 
         stage('Generate Documentation') {
             when { expression { env.IS_TAG_BUILD != 'true' } }
