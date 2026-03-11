@@ -43,22 +43,22 @@ module "globe_rotating" {
   }
 }
 
-output "rotating_globe_url" {
-  description = "URL of the rotating globe website."
-  value       = "http://${module.globe_rotating.bucket_website_endpoint}"
-}
+# output "rotating_globe_url" {
+#   description = "URL of the rotating globe website."
+#   value       = "http://${module.globe_rotating.bucket_website_endpoint}"
+# }
 
-output "rotating_globe_title" {
-  description = "Resolved title for the rotating globe (from nullable variable)."
-  value       = module.globe_rotating.globe_title
-}
+# output "rotating_globe_title" {
+#   description = "Resolved title for the rotating globe (from nullable variable)."
+#   value       = module.globe_rotating.globe_title
+# }
 
-output "rotating_globe_auto_rotate" {
-  description = "Whether auto-rotation is enabled on the rotating globe."
-  value       = module.globe_rotating.auto_rotate_enabled
-}
+# output "rotating_globe_auto_rotate" {
+#   description = "Whether auto-rotation is enabled on the rotating globe."
+#   value       = module.globe_rotating.auto_rotate_enabled
+# }
 
-output "rotating_globe_tags" {
-  description = "Final tag map applied to the rotating globe bucket."
-  value       = module.globe_rotating.common_tags
-}
+# output "rotating_globe_tags" {
+#   description = "Final tag map applied to the rotating globe bucket."
+#   value       = module.globe_rotating.common_tags
+# }
