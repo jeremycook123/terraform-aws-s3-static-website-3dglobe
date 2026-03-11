@@ -1,0 +1,16 @@
+## v0.0.8
+- updated Jenkinsfile
+- updated Jenkinsfile## v0.0.8
+- updated Jenkinsfile
+- updated Jenkinsfile
+- updated Jenkinsfile## v0.0.9
+- updated examples
+- updated examples
+- updated examples - source
+- performed terraform fmt
+- updates - added rotating on/off property## v0.0.10
+- updated Jenkinsfile
+- updated examples## v0.0.11
+- added README.md files to each examples dir## v0.0.12
+- updated Jenkinsfile## v0.0.13
+- updated Jenkinsfile
