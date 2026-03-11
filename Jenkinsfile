@@ -14,25 +14,47 @@ pipeline {
             }
         }
 
+        stage('Detect Tag Build') {
+            steps {
+                script {
+                def tag = sh(
+                    script: "git tag --points-at HEAD",
+                    returnStdout: true
+                ).trim()
+
+                env.IS_TAG_BUILD = tag ? 'true' : 'false'
+                if (tag) {
+                    echo "Tag build detected (${tag}). Remaining stages will be skipped."
+                } else {
+                    echo "Branch/PR build detected. Proceeding with full pipeline."
+                }
+                }
+            }
+        }        
+
         stage('Terraform Format') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 sh 'terraform fmt -check -recursive'
             }
         }
 
         stage('Terraform Init') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 sh 'terraform init -backend=false'
             }
         }
 
         stage('Terraform Validate') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 sh 'terraform validate'
             }
         }
 
         stage('Terraform Lint') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 sh '''
                 if command -v tflint >/dev/null; then
@@ -44,6 +66,7 @@ pipeline {
         }
 
         // stage('Security Scan') {
+        //     when { expression { env.IS_TAG_BUILD != 'true' } }
         //     steps {
         //         sh '''
         //         if command -v tfsec >/dev/null; then
@@ -56,6 +79,7 @@ pipeline {
         // }
 
         stage('Generate Documentation') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 sh '''
                 terraform-docs markdown table \
@@ -66,6 +90,7 @@ pipeline {
         }
 
         stage('Validate Examples') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 sh '''
                 for example in examples/*; do
@@ -80,6 +105,7 @@ pipeline {
         }
 
         stage('Determine Version') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 script {
 
@@ -102,6 +128,7 @@ pipeline {
         }
 
         stage('Generate Version') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 script {
 
@@ -135,6 +162,7 @@ pipeline {
         }
 
         stage('Generate Changelog') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 sh '''
                 echo "## ${NEW_VERSION}" >> CHANGELOG.md
@@ -144,6 +172,7 @@ pipeline {
         }
 
         stage('Commit Docs & Changelog') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
 
                 withCredentials([usernamePassword(
@@ -170,6 +199,7 @@ pipeline {
         }
 
         stage('Create Release Tag') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
 
                 withCredentials([usernamePassword(
@@ -187,6 +217,7 @@ pipeline {
         }
 
         stage('Publish Notice') {
+            when { expression { env.IS_TAG_BUILD != 'true' } }
             steps {
                 echo """
 Module release triggered
