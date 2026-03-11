@@ -10,13 +10,18 @@ pipeline {
     stages {
 
         stage('Skip Tag Builds') {
-            when {
-                buildingTag()
-            }
             steps {
-                echo "Build triggered by tag. Skipping pipeline."
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    def ref = sh(
+                        script: "git rev-parse --abbrev-ref HEAD",
+                        returnStdout: true
+                    ).trim()
+
+                    if (ref.startsWith("tags/") || ref.startsWith("v")) {
+                        echo "Tag build detected (${ref}). Skipping pipeline."
+                        currentBuild.result = 'SUCCESS'
+                        return
+                    }
                 }
             }
         }
