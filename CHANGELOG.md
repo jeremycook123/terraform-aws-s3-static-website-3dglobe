@@ -107,4 +107,5 @@
 - updated Jenkinsfile## v0.0.103
 - updated Jenkinsfile## v0.0.104
 ## v0.0.105
+- updated Jenkinsfile## v0.0.106
 - updated Jenkinsfile
