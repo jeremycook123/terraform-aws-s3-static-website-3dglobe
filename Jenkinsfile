@@ -4,7 +4,7 @@ pipeline {
     environment {
         AUTHOR = "Jeremy Cook"
         REPO = "terraform-aws-example"
-        PIPELINE_VERSION = "0.0.2"
+        PIPELINE_VERSION = "0.0.3"
     }
 
     stages {
