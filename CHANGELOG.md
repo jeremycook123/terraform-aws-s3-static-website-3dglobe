@@ -102,3 +102,6 @@
 ## v0.0.99
 ## v0.0.100
 ## v0.0.101
+## v0.0.102
+- Merge branch 'main' of https://github.com/jeremycook123/s3_static_site_module
+- updated Jenkinsfile
