@@ -18,7 +18,8 @@ provider "aws" {
 }
 
 module "globe_rotating" {
-  source = "jeremycook123/s3-static-website-3dglobe/aws"
+  source  = "jeremycook123/s3-static-website-3dglobe/aws"
+  version = "0.0.9"
 
   # Required variables — must always be provided
   bucket_name = "my-3dglobe"
@@ -28,13 +29,13 @@ module "globe_rotating" {
   create_random_suffix = true
 
   # Bool flag — enables auto-rotation in the rendered globe.js
-  # auto_rotate = true
+  auto_rotate = true
 
   # Number — only meaningful when auto_rotate = true; controls spin speed
-  # rotation_speed = 0.002
+  rotation_speed = 0.002
 
   # Nullable string — overrides the default "World Elevation" page title
-  # globe_title = "Earth in Motion"
+  globe_title = "Earth in Motion"
 
   # Map — merged with module base tags on the S3 bucket
   tags = {
@@ -43,22 +44,22 @@ module "globe_rotating" {
   }
 }
 
-# output "rotating_globe_url" {
-#   description = "URL of the rotating globe website."
-#   value       = "http://${module.globe_rotating.bucket_website_endpoint}"
-# }
+output "rotating_globe_url" {
+  description = "URL of the rotating globe website."
+  value       = "http://${module.globe_rotating.bucket_website_endpoint}"
+}
 
-# output "rotating_globe_title" {
-#   description = "Resolved title for the rotating globe (from nullable variable)."
-#   value       = module.globe_rotating.globe_title
-# }
+output "rotating_globe_title" {
+  description = "Resolved title for the rotating globe (from nullable variable)."
+  value       = module.globe_rotating.globe_title
+}
 
-# output "rotating_globe_auto_rotate" {
-#   description = "Whether auto-rotation is enabled on the rotating globe."
-#   value       = module.globe_rotating.auto_rotate_enabled
-# }
+output "rotating_globe_auto_rotate" {
+  description = "Whether auto-rotation is enabled on the rotating globe."
+  value       = module.globe_rotating.auto_rotate_enabled
+}
 
-# output "rotating_globe_tags" {
-#   description = "Final tag map applied to the rotating globe bucket."
-#   value       = module.globe_rotating.common_tags
-# }
+output "rotating_globe_tags" {
+  description = "Final tag map applied to the rotating globe bucket."
+  value       = module.globe_rotating.common_tags
+}
