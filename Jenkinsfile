@@ -8,17 +8,11 @@ pipeline {
     }
 
     stages {
-
         stage('Skip Tag Builds') {
             steps {
                 script {
-                    def ref = sh(
-                        script: "git rev-parse --abbrev-ref HEAD",
-                        returnStdout: true
-                    ).trim()
-
-                    if (ref.startsWith("tags/") || ref.startsWith("v")) {
-                        echo "Tag build detected (${ref}). Skipping pipeline."
+                    if (env.BRANCH_NAME ==~ /^v?\d+\.\d+\.\d+$/) {
+                        echo "Tag build detected (${env.BRANCH_NAME}). Skipping pipeline."
                         currentBuild.result = 'SUCCESS'
                         return
                     }
