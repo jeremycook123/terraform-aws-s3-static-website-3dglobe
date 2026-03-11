@@ -31,17 +31,17 @@ module "globe_static" {
   # tags                 → defaults to {}     (only base tags applied)
 }
 
-output "static_globe_url" {
-  description = "URL of the static globe website."
-  value       = "http://${module.globe_static.bucket_website_endpoint}"
-}
+# output "static_globe_url" {
+#   description = "URL of the static globe website."
+#   value       = "http://${module.globe_static.bucket_website_endpoint}"
+# }
 
-output "static_globe_title" {
-  description = "Resolved title for the static globe (falls back to default)."
-  value       = module.globe_static.globe_title
-}
+# output "static_globe_title" {
+#   description = "Resolved title for the static globe (falls back to default)."
+#   value       = module.globe_static.globe_title
+# }
 
-output "static_globe_auto_rotate" {
-  description = "Whether auto-rotation is enabled on the static globe."
-  value       = module.globe_static.auto_rotate_enabled
-}
+# output "static_globe_auto_rotate" {
+#   description = "Whether auto-rotation is enabled on the static globe."
+#   value       = module.globe_static.auto_rotate_enabled
+# }
