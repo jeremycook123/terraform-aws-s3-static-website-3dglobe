@@ -14,23 +14,6 @@ pipeline {
             }
         }
 
-        stage('Skip Tag Builds') {
-            steps {
-                script {
-                    def tag = sh(
-                        script: "git tag --points-at HEAD",
-                        returnStdout: true
-                    ).trim()
-
-                    if (tag) {
-                        echo "Tag build detected (${tag}). Skipping pipeline."
-                        currentBuild.result = 'NOT_BUILT'
-                        return
-                    }
-                }
-            }
-        }
-
         stage('Terraform Format') {
             steps {
                 sh 'terraform fmt -check -recursive'
