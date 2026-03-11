@@ -4,7 +4,7 @@ pipeline {
     environment {
         AUTHOR = "Jeremy Cook"
         REPO = "terraform-aws-example"
-        PIPELINE_VERSION = "0.0.3"
+        PIPELINE_VERSION = "0.0.4"
     }
 
     stages {
@@ -33,7 +33,7 @@ pipeline {
             }
         }
 
-        stage('Lint Terraform') {
+        stage('Terraform Lint') {
             steps {
                 sh '''
                 if command -v tflint >/dev/null; then
