@@ -8,22 +8,27 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Skip Tag Builds') {
             steps {
                 script {
-                    echo "env.BRANCH_NAME: ${env.BRANCH_NAME}"
-                    if (env.BRANCH_NAME ==~ /^(refs\/tags\/)?(tags\/)?v?\d+\.\d+\.\d+$/) {
-                        echo "Tag build detected (${env.BRANCH_NAME}). Skipping pipeline."
+                    // Are we currently on a tag?
+                    def ref = sh(
+                        script: "git describe --tags --exact-match 2>/dev/null || echo 'no-tag'",
+                        returnStdout: true
+                    ).trim()
+
+                    if (ref != "no-tag") {
+                        echo "Tag build detected (${ref}). Skipping pipeline."
                         currentBuild.result = 'SUCCESS'
                         error("Stopping pipeline for tag build.")
                     }
                 }
-            }
-        }
-
-        stage('Checkout') {
-            steps {
-                checkout scm
             }
         }
 
